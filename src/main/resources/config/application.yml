@@ -1,0 +1,11 @@
+# 设定配置环境
+spring:
+  profiles:
+    active: local
+
+# mybatis配置
+mybatis:
+  typeAliasesPackage: cn.lemon.**.entity
+  mapperLocations: classpath*:/mybatis/*.xml
+
+...

@@ -1,0 +1,62 @@
+spring:
+  dataSource:
+    driver-class-name: com.mysql.jdbc.ReplicationDriver
+    url: jdbc:mysql:replication://10.45.12.145:3306,10.45.12.146:3306/message?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: lemon
+    initialSize: 3
+    minIdle: 3
+    maxActive: 20
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 1
+    testWhileIdle: true
+  redis:
+    database: db0
+    host: redis
+    port: 6379
+    password: 123456
+    pool:
+      max-idle: 200
+      min-idle: 0
+      max-active: 300
+      max-wait: -1
+      timeout: 0
+
+flyway:
+  baselineOnMigrate: true
+
+dubbo:
+  application:  # 提供方应用信息，用于计算依赖关系
+    name: lemon-message
+    owner: lonyee
+    version: 1.0.0
+    organization: lemon
+    logger: slf4j
+  provider:
+    timeout: 3000
+    retries: 1
+    delay: -1
+  registry:
+    protocol: zookeeper
+    address: zookeeper:2181
+    check: false
+    register: true
+    subscribe: true
+  annotation:
+    package: cn.lemon.dubbo.message.service  # 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类
+  protocol:
+    name: dubbo
+    port: 20880
+    accessLog: true
+
+
+# 日志设定
+logging:
+  level:
+    cn.lemon: DEBUG
+  config: classpath:config/logback.xml
+  path: /usr/logs/message
+  
+
+...

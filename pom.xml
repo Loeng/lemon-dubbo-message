@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.lemon</groupId>
+		<artifactId>lemon-dubbo-starter</artifactId>
+		<version>0.0.1</version>
+		<relativePath>../lemon-dubbo-starter</relativePath>
+	</parent>
+	<artifactId>lemon-dubbo-message</artifactId>
+	<packaging>jar</packaging>
+
+	<name>lemon-dubbo-message</name>
+	<description>发送消息服务，包含短信/邮件/微信/推送/rabbitMQ等</description>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>lonyee</name>
+			<email>lonyee@live.com</email>
+			<organization>lemon-china</organization>
+			<organizationUrl>http://www.lemon-china.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>cn.lemon</groupId>
+			<artifactId>lemon-dubbo-protocol</artifactId>
+			<version>${protocol.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.lemon</groupId>
+			<artifactId>lemon-mybatis-plus</artifactId>
+			<version>${mybatis.plus.version}</version>
+		</dependency>
+		<!-- spring-boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
