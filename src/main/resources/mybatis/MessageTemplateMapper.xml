@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lemon.dubbo.message.dao.IMessageTemplateDao">
+		<!--删除数据-->
+	<delete id="delete">
+		delete from t_user where id=#{id}
+	</delete>
+
+	<!--逻辑删除数据-->
+	<delete id="deleteBySoft">
+		update t_user set usable=0 where id=#{id}
+	</delete>
+	
+</mapper>
