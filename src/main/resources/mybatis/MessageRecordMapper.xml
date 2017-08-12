@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lemon.dubbo.message.dao.IMessageRecordDao">
+	<resultMap id="messageRecordResultMap" type="cn.lemon.dubbo.message.entity.MessageRecord">
+		<id property="id" column="id" />
+		<result property="templateId" column="template_id"/>
+		<result property="pushMethod" column="push_method"/>
+		<result property="message" column="message"/>
+		<result property="url" column="url"/>
+		<result property="userId" column="user_id"/>
+		<result property="sendTimes" column="send_times"/>
+		<result property="scheduleTime" column="schedule_time"/>
+		<result property="ext" column="ext"/>
+		<result property="usable" column="usable"/>
+		<result property="createdDate" column="created_date"/>
+		<result property="creator" column="creator"/>
+	</resultMap>
+
+	<!--查询实体数据-->
+	<select id="find" resultMap="messageRecordResultMap">
+		select * from message_record 
+		<where>
+		    <if test="usable!=null">
+		        and usable=#{usable}
+		    </if>
+		</where>
+		limit 1 
+	</select>
+
+	<!--查询实体数据-->
+	<select id="findById" resultMap="messageRecordResultMap">
+		select * from message_record where id=#{id} limit 1 
+	</select>
+
+	<!--查询列表数据-->
+	<select id="findAll" resultMap="messageRecordResultMap">
+		select * from message_record 
+		<where>
+		    <if test="usable!=null">
+		        and usable=#{usable}
+		    </if>
+		</where>
+	</select>
+
+	<!--查询分页列表数据-->
+	<select id="findPage" resultMap="messageRecordResultMap">
+		select * from message_record 
+		<where>
+		    <if test="usable!=null">
+		        and usable=#{usable}
+		    </if>
+		</where>
+	</select>
+
+	<!--保存数据-->
+	<insert id="save" parameterType="cn.lemon.dubbo.message.entity.MessageRecord" useGeneratedKeys="true" keyProperty="id">
+		insert into message_record(
+			id,
+			template_id,
+			push_method,
+			message,
+			url,
+			user_id,
+			send_times,
+			schedule_time,
+			ext,
+			usable,
+			created_date,
+			creator) values(
+			#{id},
+			#{templateId},
+			#{pushMethod},
+			#{message},
+			#{url},
+			#{userId},
+			#{sendTimes},
+			#{scheduleTime},
+			#{ext},
+			#{usable},
+			#{createdDate},
+			#{creator})
+	</insert>
+
+	<!--更新数据-->
+	<update  id="update" parameterType="cn.lemon.dubbo.message.entity.MessageRecord">
+		update message_record
+		<set> 
+			<if test="templateId!=null">
+				template_id=#{templateId},
+			</if>
+			<if test="pushMethod!=null">
+				push_method=#{pushMethod},
+			</if>
+			<if test="message!=null">
+				message=#{message},
+			</if>
+			<if test="url!=null">
+				url=#{url},
+			</if>
+			<if test="userId!=null">
+				user_id=#{userId},
+			</if>
+			<if test="sendTimes!=null">
+				send_times=#{sendTimes},
+			</if>
+			<if test="scheduleTime!=null">
+				schedule_time=#{scheduleTime},
+			</if>
+			<if test="ext!=null">
+				ext=#{ext},
+			</if>
+			<if test="usable!=null">
+				usable=#{usable},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!--删除数据-->
+	<delete id="delete">
+		delete from message_record where id=#{id}
+	</delete>
+
+	<!--逻辑删除数据-->
+	<update id="deleteBySoft">
+		update message_record set usable=0 where id=#{id}
+	</update>
+
+</mapper>
