@@ -13,7 +13,7 @@ spring:
     testWhileIdle: true
   redis:
     database: db0
-    host: 192.168.99.100
+    host: 127.0.0.1
     port: 32770
     # password: 123456
     pool:
@@ -39,7 +39,7 @@ dubbo:
     delay: -1
   registry:
     protocol: zookeeper
-    address: 192.168.99.100:32780
+    address: 127.0.0.1:32780
     check: false
     register: true
     subscribe: true
@@ -47,7 +47,7 @@ dubbo:
     package: cn.lemon.dubbo.message.service  # 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类
   protocol:
     name: dubbo
-    port: 20880
+    port: 20881
     accessLog: true
 
 # 日志设定
