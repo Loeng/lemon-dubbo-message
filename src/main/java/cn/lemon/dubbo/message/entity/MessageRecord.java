@@ -25,8 +25,14 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	//fields
 	/** 模板ID **/
 	private Long templateId;
-	/** 推送方式 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
+	/** 第三方模板中心ID **/
+	private String centerId;
+	/** 推送方式 INL: 站内信 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
 	private PushMethodEnum pushMethod;
+	/** 发送地址  手机号、openId等 **/
+	private String sendTo;
+	/** 标题 **/
+	private String title;
 	/** 名称 **/
 	private String message;
 	/** 访问地址 **/
@@ -37,8 +43,6 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	private Integer sendTimes;
 	/** 预约发送时间 空为立即发送 **/
 	private Date scheduleTime;
-	/** 扩展信息 手机号、openId等 **/
-	private String ext;
 
 
 	public void setTemplateId(Long templateId) {
@@ -47,11 +51,23 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public Long getTemplateId() {
 		return templateId;
 	}
+	public String getCenterId() {
+		return centerId;
+	}
+	public void setCenterId(String centerId) {
+		this.centerId = centerId;
+	}
 	public void setPushMethod(PushMethodEnum pushMethod) {
 		this.pushMethod=pushMethod;
 	}
 	public PushMethodEnum getPushMethod() {
 		return pushMethod;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public void setMessage(String message) {
 		this.message=message;
@@ -84,10 +100,10 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public Date getScheduleTime() {
 		return scheduleTime;
 	}
-	public void setExt(String ext) {
-		this.ext=ext;
+	public void setSendTo(String sendTo) {
+		this.sendTo=sendTo;
 	}
-	public String getExt() {
-		return ext;
+	public String getSendTo() {
+		return sendTo;
 	}
 }

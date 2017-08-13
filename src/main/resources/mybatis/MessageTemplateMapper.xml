@@ -21,6 +21,9 @@
 		    <if test="usable!=null">
 		        and usable=#{usable}
 		    </if>
+		    <if test="messageType!=null">
+		        and message_type=#{messageType}
+		    </if>
 		</where>
 		limit 1 
 	</select>
@@ -36,6 +39,9 @@
 		<where>
 		    <if test="usable!=null">
 		        and usable=#{usable}
+		    </if>
+		    <if test="messageType!=null">
+		        and message_type=#{messageType}
 		    </if>
 		</where>
 	</select>

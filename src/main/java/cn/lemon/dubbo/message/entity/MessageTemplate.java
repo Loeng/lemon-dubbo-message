@@ -23,8 +23,8 @@ public class MessageTemplate extends BasicEntityBean<Long> {
 	/** 第三方模板中心ID **/
 	private String centerId;
 	/** 消息类型 **/
-	private String messageType;
-	/** 推送方式 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
+	private Integer messageType;
+	/** 推送方式 INL: 站内信 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
 	private PushMethodEnum pushMethod;
 	/** 标题 **/
 	private String title;
@@ -40,10 +40,10 @@ public class MessageTemplate extends BasicEntityBean<Long> {
 	public String getCenterId() {
 		return centerId;
 	}
-	public void setMessageType(String messageType) {
+	public void setMessageType(Integer messageType) {
 		this.messageType=messageType;
 	}
-	public String getMessageType() {
+	public Integer getMessageType() {
 		return messageType;
 	}
 	public void setPushMethod(PushMethodEnum pushMethod) {

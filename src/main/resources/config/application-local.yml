@@ -50,6 +50,22 @@ dubbo:
     port: 20881
     accessLog: true
 
+app:
+  alisms:
+    url: http://gw.api.taobao.com/router/rest
+    appKey: 23579165
+    appSecret: 8bc04e583c986b15aaca3b4729a260ec
+    sign: 乐檬中国
+  mail:
+    host: smtp.yeah.net
+    username: lemon_china@yeah.net
+    password: qq123456
+    default-encoding: UTF-8
+    sign: 乐檬中国
+  wechat:
+    appId: wx7369c8fd2aa77079
+    appSecret: 06294838b3533c7e8a485c61cbecc9b7
+
 # 日志设定
 logging:
   level:
