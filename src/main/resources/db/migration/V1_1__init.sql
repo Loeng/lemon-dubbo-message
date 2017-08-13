@@ -1,6 +1,6 @@
 create table  `message_template`
 (
-       `id`              BIGINT not null comment '编号',
+       `id`              BIGINT  primary key not null comment '编号',
        `center_id`       VARCHAR(20) comment '第三方模板中心ID',
        `message_type`    VARCHAR(10) comment '消息类型',
        `push_method`     CHAR(3) comment '推送方式 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ',
@@ -11,13 +11,11 @@ create table  `message_template`
        `created_date`    DATETIME comment '创建时间',
        `creator`         BIGINT comment '创建人员'
 );
-alter  table `message_template`
-       add constraint `PK_message_template_id` primary key (`id`);
 alter table `message_template` comment= '消息模板表';
 
 create table  `message_record`
 (
-       `id`              BIGINT not null comment '编号',
+       `id`              BIGINT auto_increment primary key not null comment '编号',
        `template_id`     BIGINT comment '模板ID',
        `push_method`     CHAR(3) comment '推送方式 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ',
        `message`         VARCHAR(1000) comment '名称',
@@ -30,6 +28,4 @@ create table  `message_record`
        `created_date`    DATETIME comment '创建时间',
        `creator`         BIGINT comment '创建人员'
 );
-alter  table `message_record`
-       add constraint `PK_message_record_id` primary key (`id`);
 alter table `message_record` comment= '消息发送记录表';
