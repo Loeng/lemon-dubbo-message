@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.ConsumerConfig;
 import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.ProviderConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
@@ -46,10 +47,12 @@ public class DubboConfiguration {
 	@Bean
 	@ConfigurationProperties(prefix="dubbo.provider")
 	public ProviderConfig providerConfig() {
-		ProviderConfig providerConfig = new ProviderConfig();
-        /*providerConfig.setApplication(applicationConfig());
-        providerConfig.setRegistry(registryConfig());
-        providerConfig.setProtocol(protocolConfig());*/
-		return providerConfig;
+		return new ProviderConfig();
+	}
+
+	@Bean
+	@ConfigurationProperties(prefix="dubbo.consumer")
+	public ConsumerConfig consumerConfig() {
+		return new ConsumerConfig();
 	}
 }

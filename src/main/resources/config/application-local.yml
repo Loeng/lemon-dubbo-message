@@ -37,6 +37,8 @@ dubbo:
     timeout: 3000
     retries: 1
     delay: -1
+  consumer:
+    check: false
   registry:
     protocol: zookeeper
     address: zookeeper:32780
