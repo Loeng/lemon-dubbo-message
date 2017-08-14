@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import cn.lemon.dubbo.message.api.IMessageService;
 import cn.lemon.dubbo.message.client.AlismsClient;
 import cn.lemon.dubbo.message.client.EmailClient;
+import cn.lemon.dubbo.message.client.RabbitClient;
 import cn.lemon.dubbo.message.client.WechatClient;
 import cn.lemon.dubbo.message.dao.IMessageRecordDao;
 import cn.lemon.dubbo.message.dao.IMessageTemplateDao;
@@ -41,6 +42,8 @@ public class MessageService extends BasicService implements IMessageService {
 	private EmailClient emailClient;
 	@Resource
 	private WechatClient wechatClient;
+	@Resource
+	private RabbitClient rabbitClient;
 	
 	/**
 	 * 发送模板消息
@@ -56,7 +59,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * 发送模板消息
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
-	 * @param sendTo 消息发送给xx  mobile/email/...
+	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
 	 * @param params 消息参数
 	 */
 	public void sendMessage(Long userId, Integer messageType, String sendTo, Map<String, String> params) {
@@ -67,7 +70,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * 发送模板消息
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
-	 * @param sendTo 消息发送给xx  mobile/email/...
+	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
 	 * @param scheduleTime 定时消息发送时间
 	 * @param params 消息参数
 	 */
@@ -78,9 +81,9 @@ public class MessageService extends BasicService implements IMessageService {
 		query.put("messageType", messageType);
 		List<MessageTemplate> templateList = messageTemplateDao.findAll(query);
 		for(MessageTemplate template: templateList) {
-			String title = template.getTitle();
-			String url = template.getUrl();
-			String content = template.getTemplate();
+			String title = Strings.isNullOrEmpty(template.getTitle())? "": template.getTitle();
+			String url = Strings.isNullOrEmpty(template.getUrl())? "": template.getUrl();
+			String content = Strings.isNullOrEmpty(template.getTemplate())? "": template.getTemplate();
 			for(Entry<String, String> entry: params.entrySet()) {
 				String key = "${"+entry.getKey()+"}";
 				String value = Strings.isNullOrEmpty(entry.getValue())? "": entry.getValue();
@@ -103,13 +106,11 @@ public class MessageService extends BasicService implements IMessageService {
 			messageRecord.setSendTimes(0);
 			messageRecord.setScheduleTime(scheduleTime);
 			messageRecord.setUserId(userId);
-
+			messageRecordDao.save(messageRecord);
+			//定时任务不执行发送
 			if (messageRecord.getScheduleTime()==null || DateUtil.getNowTime().before(messageRecord.getScheduleTime())) {
 				MessageThread messageThread = new MessageThread(messageRecord);
 				messageThread.start();
-			} else {
-				//定时任务直接保存
-				messageRecordDao.save(messageRecord);
 			}
 		}
 	}
@@ -152,21 +153,15 @@ public class MessageService extends BasicService implements IMessageService {
 		
 		public void run() {
 			do {
-				this.send(messageRecord);
-				
 				//发送失败时记录失败次数   系统自动重发3次
-				if (messageRecord.getId()==null || messageRecord.getId()<=0) {
-					messageRecordDao.save(messageRecord);
-				}else {
-					messageRecordDao.update(messageRecord);
-				}
+				this.send(messageRecord);
+				messageRecordDao.update(messageRecord);
 				try {
 					Thread.sleep(messageRecord.getSendTimes() * 100L); //歇一会再发
 				} catch (InterruptedException e) { }		
 			} while(messageRecord.getSendTimes()<3); //失败时自动重发 共3次
 		}
 		
-
 		/**
 		 * 发送消息
 		 */
@@ -186,8 +181,10 @@ public class MessageService extends BasicService implements IMessageService {
 						messageRecord.setSendTimes(9);
 						logger.info("邮件发送成功。 {}", messageRecord.getMessage());
 						break;
-					case RMQ: // 发送MQ消息
-						logger.error("MQ消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
+					case RBQ: // 发送MQ消息
+						rabbitClient.sendMessage(messageRecord.getSendTo(), messageRecord.getId().toString(), messageRecord.getMessage());
+						messageRecord.setSendTimes(9);
+						logger.info("MQ消息发送成功。 {}", messageRecord.getMessage());
 						break;
 					case WXM: // 发送微信模板消息
 						wechatClient.sendTemplateMessage(messageRecord.getMessage());

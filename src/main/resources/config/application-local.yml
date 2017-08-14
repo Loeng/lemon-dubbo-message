@@ -65,6 +65,13 @@ app:
   wechat:
     appId: wx7369c8fd2aa77079
     appSecret: 06294838b3533c7e8a485c61cbecc9b7
+  rabbitmq:
+    queuename: Q2
+    exchange: exchange2
+    addresses: rabbit:5672
+    username: guest
+    password: guest
+    virtual-host: /
 
 # 日志设定
 logging:
