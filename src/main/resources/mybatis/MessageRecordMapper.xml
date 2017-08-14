@@ -41,6 +41,15 @@
 		    <if test="usable!=null">
 		        and usable=#{usable}
 		    </if>
+		    <if test="pushMethod!=null">
+		        and push_method=#{pushMethod}
+		    </if>
+		    <if test="scheduleTime!=null">
+		        <![CDATA[ and schedule_time<=#{scheduleTime} ]]>
+		    </if>
+		    <if test="sendTimes!=null">
+		        and send_times=#{sendTimes}
+		    </if>
 		</where>
 	</select>
 

@@ -13,7 +13,7 @@ spring:
     testWhileIdle: true
   redis:
     database: db0
-    host: 127.0.0.1
+    host: redis
     port: 32770
     # password: 123456
     pool:
@@ -39,7 +39,7 @@ dubbo:
     delay: -1
   registry:
     protocol: zookeeper
-    address: 127.0.0.1:32780
+    address: zookeeper:32780
     check: false
     register: true
     subscribe: true

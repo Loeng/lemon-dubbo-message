@@ -1,4 +1,4 @@
-package cn.lemon.dubbo.message.util;
+package cn.lemon.dubbo.message.client;
 
 import java.io.UnsupportedEncodingException;
 
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class EmailUtil {
+public class EmailClient {
 	
 	@Resource
 	private JavaMailSender mailSender;

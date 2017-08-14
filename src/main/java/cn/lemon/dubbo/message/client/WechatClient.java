@@ -1,4 +1,4 @@
-package cn.lemon.dubbo.message.util;
+package cn.lemon.dubbo.message.client;
 
 import javax.annotation.Resource;
 
@@ -15,8 +15,8 @@ import cn.lemon.framework.utils.JsonUtil;
  * @author lonyee
  */
 @Component
-public class WeixinUtil {
-	private static Logger logger = LoggerFactory.getLogger(WeixinUtil.class);
+public class WechatClient {
+	private static Logger logger = LoggerFactory.getLogger(WechatClient.class);
 	private String appId;
 	private String appSecret;
 	

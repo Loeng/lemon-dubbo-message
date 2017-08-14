@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import cn.lemon.dubbo.message.util.AlismsUtil;
-import cn.lemon.dubbo.message.util.WeixinUtil;
+import cn.lemon.dubbo.message.client.AlismsClient;
+import cn.lemon.dubbo.message.client.WechatClient;
 
 /**
  * 系统配置
@@ -24,14 +24,14 @@ public class SpringConfiguration {
 	
 	@Bean
 	@ConfigurationProperties(prefix="app.alisms")
-	public AlismsUtil alismsUtil() {
-		return new AlismsUtil();
+	public AlismsClient alismsClient() {
+		return new AlismsClient();
 	}
 	
 	@Bean
 	@ConfigurationProperties(prefix="app.wechat")
-	public WeixinUtil weixinUtil() {
-		return new WeixinUtil();
+	public WechatClient wechatClient() {
+		return new WechatClient();
 	}
 	
 }

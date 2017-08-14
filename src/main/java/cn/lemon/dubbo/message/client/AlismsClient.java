@@ -1,4 +1,4 @@
-package cn.lemon.dubbo.message.util;
+package cn.lemon.dubbo.message.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
  * @author lonyee
  */
 @Component
-public class AlismsUtil {
-	private static Logger logger = LoggerFactory.getLogger(AlismsUtil.class);
+public class AlismsClient {
+	private static Logger logger = LoggerFactory.getLogger(AlismsClient.class);
 	private String url;
 	private String appKey;
 	private String appSecret;
