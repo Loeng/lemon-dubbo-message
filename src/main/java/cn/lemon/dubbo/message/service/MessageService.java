@@ -106,6 +106,7 @@ public class MessageService extends BasicService implements IMessageService {
 			messageRecord.setSendTimes(0);
 			messageRecord.setScheduleTime(scheduleTime);
 			messageRecord.setUserId(userId);
+			messageRecord.setCreatedDate(DateUtil.getNowTime());
 			messageRecordDao.save(messageRecord);
 			//定时任务不执行发送
 			if (messageRecord.getScheduleTime()==null || DateUtil.getNowTime().before(messageRecord.getScheduleTime())) {

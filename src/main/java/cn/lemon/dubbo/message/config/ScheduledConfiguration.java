@@ -51,13 +51,4 @@ public class ScheduledConfiguration {
 		messageService.scheduledMessage(PushMethodEnum.WXM);
 	}
 	
-	/**
-	 * 邮件定时任务(每5分钟执行一次)
-	 */
-	@Scheduled(cron="0/10 * * * * ? ")
-	public void scheduledMessage() {
-		Map<String, String> params = new HashMap<>();
-		params.put("code", "1233");
-		messageService.sendMessage(-1L, 1002, "routingkey2", params);
-	}
 }

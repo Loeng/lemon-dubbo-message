@@ -58,6 +58,7 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 	 @Override
 	public int save(Long userId, MessageTemplateDto messageTemplateDto) {
 		MessageTemplate messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
+		messageTemplate.setId(this.generateId());
 		messageTemplate.setCreator(userId);
 		messageTemplate.setCreatedDate(DateUtil.getNowTime());
 		return messageTemplateDao.save(messageTemplate);
