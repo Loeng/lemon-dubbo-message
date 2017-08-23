@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import cn.lemon.dubbo.message.api.IMessageService;
@@ -44,7 +45,9 @@ public class MessageService extends BasicService implements IMessageService {
 	private WechatClient wechatClient;
 	@Resource
 	private RabbitClient rabbitClient;
-	
+	//定义线程池
+	private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
+
 	/**
 	 * 发送模板消息
 	 * @param userId 用户ID
@@ -110,8 +113,7 @@ public class MessageService extends BasicService implements IMessageService {
 			messageRecordDao.save(messageRecord);
 			//定时任务不执行发送
 			if (messageRecord.getScheduleTime()==null || DateUtil.getNowTime().before(messageRecord.getScheduleTime())) {
-				MessageThread messageThread = new MessageThread(messageRecord);
-				messageThread.start();
+				fixedThreadPool.execute(new MessageThread(messageRecord));
 			}
 		}
 	}
@@ -129,8 +131,6 @@ public class MessageService extends BasicService implements IMessageService {
 		query.put("scheduleTime", DateUtil.getNowTime());
 		List<MessageRecord> list = messageRecordDao.findAll(query);
 		if (list.size() >=1) {
-			//创建定长10线程池
-			ExecutorService fixedThreadPool = Executors.newFixedThreadPool(20);
 			for (MessageRecord messageRecord: list) {
 				fixedThreadPool.execute(new MessageThread(messageRecord));
 			}

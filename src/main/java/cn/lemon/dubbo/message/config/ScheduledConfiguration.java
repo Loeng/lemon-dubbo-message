@@ -6,9 +6,6 @@
  */
 package cn.lemon.dubbo.message.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Configuration;
