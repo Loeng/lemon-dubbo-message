@@ -88,6 +88,9 @@
 	<logger name="cn.lemon.dubbo.message.dao" level="DEBUG">
 		<appender-ref ref="SQL_FILE" />
 	</logger>
+	<!-- 关闭访问过滤日志 -->
+	<logger name="com.alibaba.dubbo.rpc.filter.AccessLogFilter" level="OFF">
+	</logger>
 	<root level="info">
 		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="DEBUG_FILE"/>
