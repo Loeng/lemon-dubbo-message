@@ -7,17 +7,23 @@
 package cn.lemon.dubbo.message.service;
 
 import java.util.List;
+
 import javax.annotation.Resource;
-import com.alibaba.dubbo.config.annotation.Service;
+
+import cn.lemon.dubbo.message.api.IMessageTemplateService;
+import cn.lemon.dubbo.message.dao.IMessageTemplateDao;
+import cn.lemon.dubbo.message.dto.MessageTemplateDto;
+import cn.lemon.dubbo.message.entity.MessageTemplate;
+import cn.lemon.dubbo.response.ResultDubboMessage;
+import cn.lemon.framework.core.BasicService;
 import cn.lemon.framework.query.Page;
+import cn.lemon.framework.query.Query;
 import cn.lemon.framework.query.QueryPage;
+import cn.lemon.framework.response.ServiceException;
 import cn.lemon.framework.utils.BeanUtil;
 import cn.lemon.framework.utils.DateUtil;
-import cn.lemon.framework.core.BasicService;
-import cn.lemon.dubbo.message.dao.IMessageTemplateDao;
-import cn.lemon.dubbo.message.entity.MessageTemplate;
-import cn.lemon.dubbo.message.dto.MessageTemplateDto;
-import cn.lemon.dubbo.message.api.IMessageTemplateService;
+
+import com.alibaba.dubbo.config.annotation.Service;
 
 /**************************
  * MessageTemplateService
@@ -56,8 +62,16 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 	 * 保存数据
 	 */
 	 @Override
-	public int save(Long userId, MessageTemplateDto messageTemplateDto) {
-		MessageTemplate messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
+	public int save(Long userId, MessageTemplateDto messageTemplateDto) throws ServiceException {
+		Query query = new Query();
+		query.put("id", 0);
+		query.put("messageType", messageTemplateDto.getMessageType());
+		query.put("pushMethod", messageTemplateDto.getPushMethod());
+		MessageTemplate messageTemplate = messageTemplateDao.find(query);
+		if (messageTemplate!=null) {
+			throw new ServiceException(ResultDubboMessage.F5014);
+		}
+		messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
 		messageTemplate.setId(this.generateId());
 		messageTemplate.setCreator(userId);
 		messageTemplate.setCreatedDate(DateUtil.getNowTime());
@@ -68,8 +82,16 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 	 * 更新数据
 	 */
 	 @Override
-	public int update(Long userId, MessageTemplateDto messageTemplateDto) {
-		MessageTemplate messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
+	public int update(Long userId, MessageTemplateDto messageTemplateDto) throws ServiceException {
+		Query query = new Query();
+		query.put("id", messageTemplateDto.getId());
+		query.put("messageType", messageTemplateDto.getMessageType());
+		query.put("pushMethod", messageTemplateDto.getPushMethod());
+		MessageTemplate messageTemplate = messageTemplateDao.find(query);
+		if (messageTemplate!=null) {
+			throw new ServiceException(ResultDubboMessage.F5014);
+		}
+		messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
 		return messageTemplateDao.update(messageTemplate);
 	}
 

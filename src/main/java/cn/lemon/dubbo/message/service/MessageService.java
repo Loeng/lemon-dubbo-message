@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import cn.lemon.dubbo.message.api.IMessageService;

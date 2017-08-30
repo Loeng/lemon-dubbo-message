@@ -24,6 +24,11 @@
 		    <if test="messageType!=null">
 		        and message_type=#{messageType}
 		    </if>
+		    <if test="id!=null and messageType!=null and pushMethod!=null">
+		    	and id!=#{id}
+		        and message_type=#{messageType}
+		        and push_method=#{pushMethod}
+		    </if>
 		</where>
 		limit 1 
 	</select>
