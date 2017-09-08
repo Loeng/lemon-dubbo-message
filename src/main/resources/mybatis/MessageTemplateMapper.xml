@@ -55,8 +55,17 @@
 	<select id="findPage" resultMap="messageTemplateResultMap">
 		select * from message_template 
 		<where>
-		    <if test="usable!=null">
-		        and usable=#{usable}
+		    <if test="condition.usable!=null">
+		        and usable=#{condition.usable}
+		    </if>
+		    <if test="condition.messageType!=null and condition.messageType!=''">
+		        and message_type=#{condition.messageType}
+		    </if>
+		    <if test="condition.pushMethod!=null and condition.pushMethod!=''">
+		        and push_method=#{condition.pushMethod}
+		    </if>
+		    <if test="condition.keyword!=null and condition.keyword!=''">
+		        and (instr(title, #{condition.keyword}) or instr(template, #{condition.keyword}))
 		    </if>
 		</where>
 	</select>

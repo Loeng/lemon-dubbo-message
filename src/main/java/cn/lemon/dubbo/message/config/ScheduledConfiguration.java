@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import cn.lemon.dubbo.message.api.IMessageService;
-import cn.lemon.dubbo.message.em.PushMethodEnum;
 
 /**
  * 定时任务设置
@@ -29,7 +28,7 @@ public class ScheduledConfiguration {
 	 */
 	@Scheduled(cron="0 0/3 * * * ? ")
 	public void scheduledSmsMessage() {
-		messageService.scheduledMessage(PushMethodEnum.SMS);
+		messageService.scheduledMessage("SMS");
 	}
 	
 	/**
@@ -37,7 +36,7 @@ public class ScheduledConfiguration {
 	 */
 	@Scheduled(cron="0 0/5 * * * ? ")
 	public void scheduledEMIMessage() {
-		messageService.scheduledMessage(PushMethodEnum.EMI);
+		messageService.scheduledMessage("EMI");
 	}
 	
 	/**
@@ -45,7 +44,7 @@ public class ScheduledConfiguration {
 	 */
 	@Scheduled(cron="0 0/5 * * * ? ")
 	public void scheduledWXMMessage() {
-		messageService.scheduledMessage(PushMethodEnum.WXM);
+		messageService.scheduledMessage("WXM");
 	}
 	
 }

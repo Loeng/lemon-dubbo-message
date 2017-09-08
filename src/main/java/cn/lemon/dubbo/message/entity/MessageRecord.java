@@ -8,7 +8,6 @@ package cn.lemon.dubbo.message.entity;
 
 import java.util.Date;
 
-import cn.lemon.dubbo.message.em.PushMethodEnum;
 import cn.lemon.framework.core.BasicEntityBean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,7 +27,7 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	/** 第三方模板中心ID **/
 	private String centerId;
 	/** 推送方式 INL: 站内信 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
-	private PushMethodEnum pushMethod;
+	private String pushMethod;
 	/** 发送地址  手机号、openId等 **/
 	private String sendTo;
 	/** 标题 **/
@@ -57,10 +56,10 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public void setCenterId(String centerId) {
 		this.centerId = centerId;
 	}
-	public void setPushMethod(PushMethodEnum pushMethod) {
+	public void setPushMethod(String pushMethod) {
 		this.pushMethod=pushMethod;
 	}
-	public PushMethodEnum getPushMethod() {
+	public String getPushMethod() {
 		return pushMethod;
 	}
 	public String getTitle() {

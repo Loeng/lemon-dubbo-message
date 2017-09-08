@@ -16,7 +16,6 @@ import cn.lemon.dubbo.message.client.RabbitClient;
 import cn.lemon.dubbo.message.client.WechatClient;
 import cn.lemon.dubbo.message.dao.IMessageRecordDao;
 import cn.lemon.dubbo.message.dao.IMessageTemplateDao;
-import cn.lemon.dubbo.message.em.PushMethodEnum;
 import cn.lemon.dubbo.message.entity.MessageRecord;
 import cn.lemon.dubbo.message.entity.MessageTemplate;
 import cn.lemon.framework.core.BasicService;
@@ -53,7 +52,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param messageType 发送消息类型
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, Integer messageType, Map<String, String> params) {
+	public void sendMessage(Long userId, String messageType, Map<String, String> params) {
 		this.sendMessage(userId, messageType, null, params);
 	}
 	
@@ -64,7 +63,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, Integer messageType, String sendTo, Map<String, String> params) {
+	public void sendMessage(Long userId, String messageType, String sendTo, Map<String, String> params) {
 		this.sendMessage(userId, messageType, sendTo, null, params);
 	}
 	
@@ -76,8 +75,8 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param scheduleTime 定时消息发送时间
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, Integer messageType, String sendTo, Date scheduleTime, Map<String, String> params) {
-		if (params==null || messageType<=0){ return; }
+	public void sendMessage(Long userId, String messageType, String sendTo, Date scheduleTime, Map<String, String> params) {
+		if (params==null || Strings.isNullOrEmpty(messageType)){ return; }
 		
 		Query query = new Query();
 		query.put("messageType", messageType);
@@ -121,7 +120,7 @@ public class MessageService extends BasicService implements IMessageService {
 	/** 
 	 * 定时消息发送
 	 **/
-	public void scheduledMessage(PushMethodEnum pushMethod) {
+	public void scheduledMessage(String pushMethod) {
 		logger.info("start send scheduled {} message.", pushMethod);
 		Query query = new Query();
 		//query.put("maxSendTimes", 5);  //错误重试最多5次（自动重复3次，定时处理2次）
@@ -168,33 +167,33 @@ public class MessageService extends BasicService implements IMessageService {
 		private void send(MessageRecord messageRecord) {
 			try {
 				switch (messageRecord.getPushMethod()) {
-					case INL: // 发送站内消息
+					case "INL": // 发送站内消息
 						logger.error("站内消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
 						break;
-					case SMS: // 发送短信
+					case "SMS": // 发送短信
 						alismsClient.send(messageRecord.getSendTo(), messageRecord.getCenterId(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("短信发送成功。 {}", messageRecord.getMessage());
 						break;
-					case EMI: // 发送邮件消息
+					case "EMI": // 发送邮件消息
 						emailClient.send(messageRecord.getSendTo(), messageRecord.getTitle(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("邮件发送成功。 {}", messageRecord.getMessage());
 						break;
-					case RBQ: // 发送MQ消息
+					case "RBQ": // 发送MQ消息
 						rabbitClient.sendMessage(messageRecord.getSendTo(), messageRecord.getId().toString(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("MQ消息发送成功。 {}", messageRecord.getMessage());
 						break;
-					case WXM: // 发送微信模板消息
+					case "WXM": // 发送微信模板消息
 						wechatClient.sendTemplateMessage(messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("微信模板消息发送成功。 {}", messageRecord.getMessage());
 						break;
-					case ANR: // 发送安卓消息
+					case "ANR": // 发送安卓消息
 						logger.error("安卓消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
 						break;
-					case IOS: // 发送IOS消息
+					case "IOS": // 发送IOS消息
 						logger.error("IOS消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
 						break;
 				}
