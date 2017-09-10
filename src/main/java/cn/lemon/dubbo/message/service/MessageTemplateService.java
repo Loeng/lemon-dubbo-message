@@ -47,6 +47,19 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 		MessageTemplateDto messageTemplateDto = BeanUtil.toBeanValues(messageTemplate, MessageTemplateDto.class);
 		return messageTemplateDto;
 	}
+	
+
+	/**
+	 * 获取模板列表数据
+	 */
+	@Override
+	public List<MessageTemplateDto> getListByMessageType(Long userId, String messageType) {
+		Query query = new Query();
+		query.put("messageType", messageType);
+		List<MessageTemplate> list = messageTemplateDao.findAll(query);
+		List<MessageTemplateDto> listDto = BeanUtil.getBeanList(list, MessageTemplateDto.class);
+		return listDto;
+	}
 
 	/**
 	 * 获取分页数据
@@ -69,7 +82,7 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 		query.put("pushMethod", messageTemplateDto.getPushMethod());
 		MessageTemplate messageTemplate = messageTemplateDao.find(query);
 		if (messageTemplate!=null) {
-			throw new ServiceException(ResultDubboMessage.F5014);
+			throw new ServiceException(ResultDubboMessage.F5022);
 		}
 		messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
 		messageTemplate.setId(this.generateId());
@@ -89,7 +102,7 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 		query.put("pushMethod", messageTemplateDto.getPushMethod());
 		MessageTemplate messageTemplate = messageTemplateDao.find(query);
 		if (messageTemplate!=null) {
-			throw new ServiceException(ResultDubboMessage.F5014);
+			throw new ServiceException(ResultDubboMessage.F5022);
 		}
 		messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
 		return messageTemplateDao.update(messageTemplate);

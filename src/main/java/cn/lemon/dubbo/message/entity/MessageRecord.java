@@ -29,7 +29,7 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	/** 推送方式 INL: 站内信 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
 	private String pushMethod;
 	/** 发送地址  手机号、openId等 **/
-	private String sendTo;
+	private String receiver;
 	/** 标题 **/
 	private String title;
 	/** 名称 **/
@@ -37,7 +37,7 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	/** 访问地址 **/
 	private String url;
 	/** 接收人员ID **/
-	private Long userId;
+	private Long receiverId;
 	/** 发送次数 0 待发送 1-3 发送失败次数 9 发送成功 **/
 	private Integer sendTimes;
 	/** 预约发送时间 空为立即发送 **/
@@ -80,11 +80,11 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public String getUrl() {
 		return url;
 	}
-	public void setUserId(Long userId) {
-		this.userId=userId;
+	public void setReceiverId(Long receiverId) {
+		this.receiverId=receiverId;
 	}
-	public Long getUserId() {
-		return userId;
+	public Long getReceiverId() {
+		return receiverId;
 	}
 	public void setSendTimes(Integer sendTimes) {
 		this.sendTimes=sendTimes;
@@ -99,10 +99,10 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public Date getScheduleTime() {
 		return scheduleTime;
 	}
-	public void setSendTo(String sendTo) {
-		this.sendTo=sendTo;
+	public void setReceiver(String receiver) {
+		this.receiver=receiver;
 	}
-	public String getSendTo() {
-		return sendTo;
+	public String getReceiver() {
+		return receiver;
 	}
 }

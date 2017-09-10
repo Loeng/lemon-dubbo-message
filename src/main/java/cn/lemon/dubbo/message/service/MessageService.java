@@ -18,8 +18,10 @@ import cn.lemon.dubbo.message.dao.IMessageRecordDao;
 import cn.lemon.dubbo.message.dao.IMessageTemplateDao;
 import cn.lemon.dubbo.message.entity.MessageRecord;
 import cn.lemon.dubbo.message.entity.MessageTemplate;
+import cn.lemon.dubbo.response.ResultDubboMessage;
 import cn.lemon.framework.core.BasicService;
 import cn.lemon.framework.query.Query;
+import cn.lemon.framework.response.ServiceException;
 import cn.lemon.framework.utils.DateUtil;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -50,37 +52,61 @@ public class MessageService extends BasicService implements IMessageService {
 	 * 发送模板消息
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
+	 * @param receiverId 接收人员用户ID
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, String messageType, Map<String, String> params) {
-		this.sendMessage(userId, messageType, null, params);
+	@Override
+	public void sendMessage(Long userId, String messageType, Long receiverId, Map<String, String> params) throws ServiceException {
+		this.sendMessage(userId, messageType, null, receiverId, params);
 	}
 	
 	/**
 	 * 发送模板消息
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
-	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
+	 * @param receiver 消息发送给xx  mobile/email/routingkey...
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, String messageType, String sendTo, Map<String, String> params) {
+	@Override
+	public void sendMessage(Long userId, String messageType, String sendTo, Map<String, String> params) throws ServiceException {
 		this.sendMessage(userId, messageType, sendTo, null, params);
 	}
 	
 	/**
-	 * 发送模板消息
+	 * 发送模板消息 (receiver和receiverId必填一项)
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
-	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
+	 * @param receiver 消息发送给xx  mobile/email/routingkey...
+	 * @param receiverId 接收人员用户ID
+	 * @param params 消息参数
+	 */
+	@Override
+	public void sendMessage(Long userId, String messageType, String receiver, Long receiverId, Map<String, String> params) throws ServiceException {
+		this.sendMessage(userId, messageType, receiver, receiverId, null, params);
+	}
+	
+	/**
+	 * 发送模板消息 (receiver和receiverId必填一项)
+	 * @param userId 用户ID
+	 * @param messageType 发送消息类型
+	 * @param receiver 消息发送给xx  mobile/email/routingkey...
+	 * @param receiverId 接收人员用户ID
 	 * @param scheduleTime 定时消息发送时间
 	 * @param params 消息参数
 	 */
-	public void sendMessage(Long userId, String messageType, String sendTo, Date scheduleTime, Map<String, String> params) {
+	@Override
+	public void sendMessage(Long userId, String messageType, String receiver, Long receiverId, Date scheduleTime, Map<String, String> params) throws ServiceException {
 		if (params==null || Strings.isNullOrEmpty(messageType)){ return; }
+		if (Strings.isNullOrEmpty(receiver) && receiverId==null) {
+			throw new ServiceException(ResultDubboMessage.F5024);
+		}
 		
 		Query query = new Query();
 		query.put("messageType", messageType);
 		List<MessageTemplate> templateList = messageTemplateDao.findAll(query);
+		if (templateList.size()<=0) {
+			throw new ServiceException(ResultDubboMessage.F5023);
+		}
 		for(MessageTemplate template: templateList) {
 			String title = Strings.isNullOrEmpty(template.getTitle())? "": template.getTitle();
 			String url = Strings.isNullOrEmpty(template.getUrl())? "": template.getUrl();
@@ -100,13 +126,14 @@ public class MessageService extends BasicService implements IMessageService {
 			messageRecord.setTemplateId(template.getId());
 			messageRecord.setPushMethod(template.getPushMethod());
 			messageRecord.setCenterId(template.getCenterId());
-			messageRecord.setSendTo(sendTo);
+			messageRecord.setReceiver(receiver);
 			messageRecord.setTitle(title);
 			messageRecord.setMessage(content);
 			messageRecord.setUrl(url);
 			messageRecord.setSendTimes(0);
 			messageRecord.setScheduleTime(scheduleTime);
-			messageRecord.setUserId(userId);
+			messageRecord.setReceiverId(receiverId);
+			messageRecord.setCreator(userId);
 			messageRecord.setCreatedDate(DateUtil.getNowTime());
 			messageRecordDao.save(messageRecord);
 			//定时任务不执行发送
@@ -120,6 +147,7 @@ public class MessageService extends BasicService implements IMessageService {
 	/** 
 	 * 定时消息发送
 	 **/
+	@Override
 	public void scheduledMessage(String pushMethod) {
 		logger.info("start send scheduled {} message.", pushMethod);
 		Query query = new Query();
@@ -168,20 +196,19 @@ public class MessageService extends BasicService implements IMessageService {
 			try {
 				switch (messageRecord.getPushMethod()) {
 					case "INL": // 发送站内消息
-						logger.error("站内消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
-						break;
+						throw new RuntimeException("站内消息发送服务未开通");
 					case "SMS": // 发送短信
-						alismsClient.send(messageRecord.getSendTo(), messageRecord.getCenterId(), messageRecord.getMessage());
+						alismsClient.send(messageRecord.getReceiver(), messageRecord.getCenterId(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("短信发送成功。 {}", messageRecord.getMessage());
 						break;
 					case "EMI": // 发送邮件消息
-						emailClient.send(messageRecord.getSendTo(), messageRecord.getTitle(), messageRecord.getMessage());
+						emailClient.send(messageRecord.getReceiver(), messageRecord.getTitle(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("邮件发送成功。 {}", messageRecord.getMessage());
 						break;
 					case "RBQ": // 发送MQ消息
-						rabbitClient.sendMessage(messageRecord.getSendTo(), messageRecord.getId().toString(), messageRecord.getMessage());
+						rabbitClient.sendMessage(messageRecord.getReceiver(), messageRecord.getId().toString(), messageRecord.getMessage());
 						messageRecord.setSendTimes(9);
 						logger.info("MQ消息发送成功。 {}", messageRecord.getMessage());
 						break;
@@ -191,11 +218,9 @@ public class MessageService extends BasicService implements IMessageService {
 						logger.info("微信模板消息发送成功。 {}", messageRecord.getMessage());
 						break;
 					case "ANR": // 发送安卓消息
-						logger.error("安卓消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
-						break;
+						throw new RuntimeException("安卓消息发送服务未开通");
 					case "IOS": // 发送IOS消息
-						logger.error("IOS消息发送失败, {}。\r\n {}", "未开通的发送服务", messageRecord.getMessage());
-						break;
+						throw new RuntimeException("IOS消息发送服务未开通");
 				}
 			} catch (Exception e) {
 				messageRecord.setSendTimes(messageRecord.getSendTimes() + 1);

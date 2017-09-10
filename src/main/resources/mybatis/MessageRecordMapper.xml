@@ -6,11 +6,11 @@
 		<result property="centerId" column="center_id"/>
 		<result property="templateId" column="template_id"/>
 		<result property="pushMethod" column="push_method"/>
-		<result property="sendTo" column="send_to"/>
+		<result property="receiver" column="receiver"/>
 		<result property="title" column="title"/>
 		<result property="message" column="message"/>
 		<result property="url" column="url"/>
-		<result property="userId" column="user_id"/>
+		<result property="receiverId" column="receiver_id"/>
 		<result property="sendTimes" column="send_times"/>
 		<result property="scheduleTime" column="schedule_time"/>
 		<result property="usable" column="usable"/>
@@ -57,8 +57,14 @@
 	<select id="findPage" resultMap="messageRecordResultMap">
 		select * from message_record 
 		<where>
-		    <if test="usable!=null">
-		        and usable=#{usable}
+		    <if test="condition.usable!=null">
+		        and usable=#{condition.usable}
+		    </if>
+		    <if test="condition.pushMethod!=null and condition.pushMethod!=''">
+		        and push_method=#{condition.pushMethod}
+		    </if>
+		    <if test="condition.keyword!=null and condition.keyword!=''">
+		        and (instr(title, #{condition.keyword}) or instr(message, #{condition.keyword}))
 		    </if>
 		</where>
 	</select>
@@ -73,10 +79,10 @@
 			title,
 			message,
 			url,
-			user_id,
+			receiver_id,
 			send_times,
 			schedule_time,
-			send_to,
+			receiver,
 			usable,
 			created_date,
 			creator) values(
@@ -87,10 +93,10 @@
 			#{title},
 			#{message},
 			#{url},
-			#{userId},
+			#{receiverId},
 			#{sendTimes},
 			#{scheduleTime},
-			#{sendTo},
+			#{receiver},
 			#{usable},
 			#{createdDate},
 			#{creator})
@@ -118,8 +124,8 @@
 			<if test="url!=null">
 				url=#{url},
 			</if>
-			<if test="userId!=null">
-				user_id=#{userId},
+			<if test="receiverId!=null">
+				receiver_id=#{receiverId},
 			</if>
 			<if test="sendTimes!=null">
 				send_times=#{sendTimes},
@@ -127,8 +133,8 @@
 			<if test="scheduleTime!=null">
 				schedule_time=#{scheduleTime},
 			</if>
-			<if test="sendTo!=null">
-				send_to=#{sendTo},
+			<if test="receiver!=null">
+				receiver=#{receiver},
 			</if>
 			<if test="usable!=null">
 				usable=#{usable},
