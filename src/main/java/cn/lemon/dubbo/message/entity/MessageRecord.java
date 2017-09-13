@@ -95,7 +95,7 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public void setScheduleTime(Date scheduleTime) {
 		this.scheduleTime=scheduleTime;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
 	public Date getScheduleTime() {
 		return scheduleTime;
 	}
