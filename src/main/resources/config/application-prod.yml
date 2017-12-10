@@ -17,11 +17,11 @@ spring:
     port: 6379
     password: 123456
     pool:
-      max-idle: 200
-      min-idle: 0
-      max-active: 300
+      max-idle: 16
+      min-idle: 4
+      max-active: 40
       max-wait: -1
-      timeout: 0
+      timeout: 2000
 
 flyway:
   baselineOnMigrate: true
@@ -37,6 +37,7 @@ dubbo:
     timeout: 3000
     retries: 1
     delay: -1
+    threadpool: cached  # fixed 固定池 cached 缓存池 limited 增长池
   consumer:
     check: false
   registry:
