@@ -42,7 +42,7 @@ dubbo:
     check: false
   registry:
     protocol: zookeeper
-    address: zookeeper:2181,zookeeper:2182,zookeeper:2183
+    address: zookeeper:2181
     check: false
     register: true
     subscribe: true
