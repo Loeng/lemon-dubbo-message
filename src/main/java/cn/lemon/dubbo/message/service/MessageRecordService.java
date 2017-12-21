@@ -38,7 +38,7 @@ public class MessageRecordService extends BasicService implements IMessageRecord
 	 * 获取对象
 	 */
 	@Override
-	public MessageRecordDto getById(Long userId, Long id) {
+	public MessageRecordDto getById(Long userId, Integer id) {
 		MessageRecord messageRecord = messageRecordDao.findById(id);
 		MessageRecordDto messageRecordDto = BeanUtil.toBeanValues(messageRecord, MessageRecordDto.class);
 		return messageRecordDto;
@@ -58,7 +58,7 @@ public class MessageRecordService extends BasicService implements IMessageRecord
 	 * 删除对象
 	 */
 	@Override
-	public int delete(Long userId, Long id) {
+	public int delete(Long userId, Integer id) {
 		return messageRecordDao.deleteBySoft(id);
 	}
 

@@ -46,6 +46,7 @@ dubbo:
     check: false
     register: true
     subscribe: true
+    file: ${user.home}/dubbo-registry-message.cache
   annotation:
     package: cn.lemon.dubbo.message.service  # 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类
   protocol:

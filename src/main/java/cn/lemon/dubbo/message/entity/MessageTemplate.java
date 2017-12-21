@@ -16,7 +16,7 @@ import cn.lemon.framework.core.BasicEntityBean;
  * @date 2017-08-12 14:08:59
  * 
  **************************/
-public class MessageTemplate extends BasicEntityBean<Long> {
+public class MessageTemplate extends BasicEntityBean<Integer> {
 	private static final long serialVersionUID = 1L;
 	//fields
 	/** 第三方模板中心ID **/

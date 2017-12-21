@@ -72,27 +72,72 @@
 
 	<!--保存数据-->
 	<insert id="save" parameterType="cn.lemon.dubbo.message.entity.MessageTemplate" useGeneratedKeys="true" keyProperty="id">
-		insert into message_template(
-			id,
-			center_id,
-			message_type,
-			push_method,
-			title,
-			template,
-			url,
-			usable,
-			created_date,
-			creator) values(
-			#{id},
-			#{centerId},
-			#{messageType},
-			#{pushMethod},
-			#{title},
-			#{template},
-			#{url},
-			#{usable},
-			#{createdDate},
-			#{creator})
+		insert into message_template
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				id,
+			</if>
+			<if test="centerId!=null">
+				center_id,
+			</if>
+			<if test="messageType!=null">
+				message_type,
+			</if>
+			<if test="pushMethod!=null">
+				push_method,
+			</if>
+			<if test="title!=null">
+				title,
+			</if>
+			<if test="template!=null">
+				template,
+			</if>
+			<if test="url!=null">
+				url,
+			</if>
+			<if test="usable!=null">
+				usable,
+			</if>
+			<if test="createdDate!=null">
+				created_date,
+			</if>
+			<if test="creator!=null">
+				creator,
+			</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				#{id},
+			</if>
+			<if test="centerId!=null">
+				#{centerId},
+			</if>
+			<if test="messageType!=null">
+				#{messageType},
+			</if>
+			<if test="pushMethod!=null">
+				#{pushMethod},
+			</if>
+			<if test="title!=null">
+				#{title},
+			</if>
+			<if test="template!=null">
+				#{template},
+			</if>
+			<if test="url!=null">
+				#{url},
+			</if>
+			<if test="usable!=null">
+				#{usable},
+			</if>
+			<if test="createdDate!=null">
+				#{createdDate},
+			</if>
+			<if test="creator!=null">
+				#{creator},
+			</if>
+		</trim>
 	</insert>
 
 	<!--更新数据-->

@@ -71,35 +71,96 @@
 
 	<!--保存数据-->
 	<insert id="save" parameterType="cn.lemon.dubbo.message.entity.MessageRecord" useGeneratedKeys="true" keyProperty="id">
-		insert into message_record(
-			id,
-			center_id,
-			template_id,
-			push_method,
-			title,
-			message,
-			url,
-			receiver_id,
-			send_times,
-			schedule_time,
-			receiver,
-			usable,
-			created_date,
-			creator) values(
-			#{id},
-			#{centerId},
-			#{templateId},
-			#{pushMethod},
-			#{title},
-			#{message},
-			#{url},
-			#{receiverId},
-			#{sendTimes},
-			#{scheduleTime},
-			#{receiver},
-			#{usable},
-			#{createdDate},
-			#{creator})
+		insert into message_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				id,
+			</if>
+			<if test="templateId!=null">
+				template_id,
+			</if>
+			<if test="centerId!=null">
+				center_id,
+			</if>
+			<if test="pushMethod!=null">
+				push_method,
+			</if>
+			<if test="receiver!=null">
+				receiver,
+			</if>
+			<if test="receiverId!=null">
+				receiver_id,
+			</if>
+			<if test="title!=null">
+				title,
+			</if>
+			<if test="message!=null">
+				message,
+			</if>
+			<if test="url!=null">
+				url,
+			</if>
+			<if test="sendTimes!=null">
+				send_times,
+			</if>
+			<if test="scheduleTime!=null">
+				schedule_time,
+			</if>
+			<if test="usable!=null">
+				usable,
+			</if>
+			<if test="createdDate!=null">
+				created_date,
+			</if>
+			<if test="creator!=null">
+				creator,
+			</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				#{id},
+			</if>
+			<if test="templateId!=null">
+				#{templateId},
+			</if>
+			<if test="centerId!=null">
+				#{centerId},
+			</if>
+			<if test="pushMethod!=null">
+				#{pushMethod},
+			</if>
+			<if test="receiver!=null">
+				#{receiver},
+			</if>
+			<if test="receiverId!=null">
+				#{receiverId},
+			</if>
+			<if test="title!=null">
+				#{title},
+			</if>
+			<if test="message!=null">
+				#{message},
+			</if>
+			<if test="url!=null">
+				#{url},
+			</if>
+			<if test="sendTimes!=null">
+				#{sendTimes},
+			</if>
+			<if test="scheduleTime!=null">
+				#{scheduleTime},
+			</if>
+			<if test="usable!=null">
+				#{usable},
+			</if>
+			<if test="createdDate!=null">
+				#{createdDate},
+			</if>
+			<if test="creator!=null">
+				#{creator},
+			</if>
+		</trim>
 	</insert>
 
 	<!--更新数据-->

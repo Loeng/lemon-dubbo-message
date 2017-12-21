@@ -19,11 +19,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @date 2017-08-12 14:08:59
  * 
  **************************/
-public class MessageRecord extends BasicEntityBean<Long> {
+public class MessageRecord extends BasicEntityBean<Integer> {
 	private static final long serialVersionUID = 1L;
 	//fields
 	/** 模板ID **/
-	private Long templateId;
+	private Integer templateId;
 	/** 第三方模板中心ID **/
 	private String centerId;
 	/** 推送方式 INL: 站内信 SMS：短信 EMI：邮件 WXM：微信 IOS：ios ANR：android RMQ：rabbitMQ **/
@@ -37,17 +37,17 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	/** 访问地址 **/
 	private String url;
 	/** 接收人员ID **/
-	private Long receiverId;
+	private Integer receiverId;
 	/** 发送次数 0 待发送 1-3 发送失败次数 9 发送成功 **/
 	private Integer sendTimes;
 	/** 预约发送时间 空为立即发送 **/
 	private Date scheduleTime;
 
 
-	public void setTemplateId(Long templateId) {
+	public void setTemplateId(Integer templateId) {
 		this.templateId=templateId;
 	}
-	public Long getTemplateId() {
+	public Integer getTemplateId() {
 		return templateId;
 	}
 	public String getCenterId() {
@@ -80,10 +80,10 @@ public class MessageRecord extends BasicEntityBean<Long> {
 	public String getUrl() {
 		return url;
 	}
-	public void setReceiverId(Long receiverId) {
+	public void setReceiverId(Integer receiverId) {
 		this.receiverId=receiverId;
 	}
-	public Long getReceiverId() {
+	public Integer getReceiverId() {
 		return receiverId;
 	}
 	public void setSendTimes(Integer sendTimes) {

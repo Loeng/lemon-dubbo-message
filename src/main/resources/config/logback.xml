@@ -82,14 +82,12 @@
 	</appender>
     
     <!-- 各种类型日志存储配置 -->
-	<logger name="cn.lemon.dubbo.message.logs" level="INFO" additivity="false">
-		<appender-ref ref="VISIT_FILE" />
-	</logger>
 	<logger name="cn.lemon.dubbo.message.dao" level="DEBUG">
 		<appender-ref ref="SQL_FILE" />
 	</logger>
-	<!-- 关闭访问过滤日志 -->
-	<logger name="com.alibaba.dubbo.rpc.filter.AccessLogFilter" level="OFF">
+	<!-- DUBBO访问过滤日志 -->
+	<logger name="com.alibaba.dubbo.rpc.filter.AccessLogFilter" level="INFO" additivity="false">
+		<appender-ref ref="VISIT_FILE" />
 	</logger>
 	<root level="info">
 		<appender-ref ref="STDOUT"/>

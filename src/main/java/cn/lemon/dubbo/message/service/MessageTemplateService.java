@@ -42,7 +42,7 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 	 * 获取对象
 	 */
 	@Override
-	public MessageTemplateDto getById(Long userId, Long id) {
+	public MessageTemplateDto getById(Long userId, Integer id) {
 		MessageTemplate messageTemplate = messageTemplateDao.findById(id);
 		MessageTemplateDto messageTemplateDto = BeanUtil.toBeanValues(messageTemplate, MessageTemplateDto.class);
 		return messageTemplateDto;
@@ -85,7 +85,6 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 			throw new ServiceException(ResultDubboMessage.F5022);
 		}
 		messageTemplate = BeanUtil.toBeanValues(messageTemplateDto, MessageTemplate.class);
-		messageTemplate.setId(this.generateId());
 		messageTemplate.setCreator(userId);
 		messageTemplate.setCreatedDate(DateUtil.getNowTime());
 		return messageTemplateDao.save(messageTemplate);
@@ -112,7 +111,7 @@ public class MessageTemplateService extends BasicService implements IMessageTemp
 	 * 删除对象
 	 */
 	@Override
-	public int delete(Long userId, Long id) {
+	public int delete(Long userId, Integer id) {
 		return messageTemplateDao.deleteBySoft(id);
 	}
 

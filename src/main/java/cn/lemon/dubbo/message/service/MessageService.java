@@ -56,7 +56,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param params 消息参数
 	 */
 	@Override
-	public void sendMessage(Long userId, String messageType, Long receiverId, Map<String, String> params) throws ServiceException {
+	public void sendMessage(Long userId, String messageType, Integer receiverId, Map<String, String> params) throws ServiceException {
 		this.sendMessage(userId, messageType, null, receiverId, params);
 	}
 	
@@ -64,7 +64,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * 发送模板消息
 	 * @param userId 用户ID
 	 * @param messageType 发送消息类型
-	 * @param receiver 消息发送给xx  mobile/email/routingkey...
+	 * @param sendTo 消息发送给xx  mobile/email/routingkey...
 	 * @param params 消息参数
 	 */
 	@Override
@@ -81,7 +81,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param params 消息参数
 	 */
 	@Override
-	public void sendMessage(Long userId, String messageType, String receiver, Long receiverId, Map<String, String> params) throws ServiceException {
+	public void sendMessage(Long userId, String messageType, String receiver, Integer receiverId, Map<String, String> params) throws ServiceException {
 		this.sendMessage(userId, messageType, receiver, receiverId, null, params);
 	}
 	
@@ -95,7 +95,7 @@ public class MessageService extends BasicService implements IMessageService {
 	 * @param params 消息参数
 	 */
 	@Override
-	public void sendMessage(Long userId, String messageType, String receiver, Long receiverId, Date scheduleTime, Map<String, String> params) throws ServiceException {
+	public void sendMessage(Long userId, String messageType, String receiver, Integer receiverId, Date scheduleTime, Map<String, String> params) throws ServiceException {
 		if (params==null || Strings.isNullOrEmpty(messageType)){ return; }
 		if (Strings.isNullOrEmpty(receiver) && receiverId==null) {
 			throw new ServiceException(ResultDubboMessage.F5024);

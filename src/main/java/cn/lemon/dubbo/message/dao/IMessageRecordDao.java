@@ -16,6 +16,6 @@ import cn.lemon.framework.core.IBasicDao;
  * @date 2017-08-12 13:50:44
  * 
  **************************/
-public interface IMessageRecordDao extends IBasicDao<MessageRecord, Long>{
+public interface IMessageRecordDao extends IBasicDao<MessageRecord, Integer>{
 	
 }
